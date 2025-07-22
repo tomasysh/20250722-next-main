@@ -73,20 +73,34 @@ export default function PostsList() {
         {/* 文章列表 */}
         {loading ? (
           <div>載入中...</div>
+        ) : posts.length === 0 ? (
+          <div className="text-center">
+            <h4>目前沒有文章</h4>
+            <p>請稍後再來查看更多內容。</p>
+          </div>
         ) : (
           posts.map((post, idx) => (
-            <div key={post._id}>
+            <div key={post._id || idx}>
               <div className="post-preview">
-                <a href={`post.html`}>
-                  <h2 className="post-title">{post.title}</h2>
+                <a href={`/posts/${post._id || post.slug}`}>
+                  <h2 className="post-title">{post.title || "無標題"}</h2>
                   {post.subTitle && (
                     <h3 className="post-subtitle">{post.subTitle}</h3>
                   )}
                 </a>
                 <p className="post-meta">
                   Posted by
-                  <a href="#!">{post.author?.name || post.author}</a>
-                  on {new Date(post.createdAt).toLocaleDateString("zh-TW")}
+                  <a href="#!">
+                    {typeof post.author === "object" && post.author?.name
+                      ? post.author.name
+                      : typeof post.author === "string"
+                      ? post.author
+                      : "Unknown Author"}
+                  </a>
+                  on{" "}
+                  {post.createdAt
+                    ? new Date(post.createdAt).toLocaleDateString("zh-TW")
+                    : "Unknown Date"}
                 </p>
               </div>
               {idx < posts.length - 1 && <hr className="my-4" />}
