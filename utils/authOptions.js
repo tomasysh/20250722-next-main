@@ -17,6 +17,7 @@ export const authOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET, // NextAuth 密鑰
   callbacks: {
     // 使用者成功登入時呼叫
     async signIn({ profile }) {
